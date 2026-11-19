@@ -2,20 +2,122 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Удаление поста</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Удаление поста - Мой блог</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #0056b3;
+            margin-left: 15px;
+            font-weight: bold;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        .delete-card {
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 30px;
+            background-color: #f8d7da;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .delete-card h1 {
+            color: #721c24;
+            margin-top: 0;
+            font-size: 1.5em;
+        }
+        .post-preview {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .post-preview h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .post-preview p {
+            color: #666;
+            margin-bottom: 0;
+        }
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .btn-cancel {
+            background-color: #f0f0f0;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+        .btn-cancel:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
 </head>
 <body>
-    <h1>Вы уверены, что хотите удалить этот пост?</h1>
-    
-    <article>
-        <h2>{{ object.title }}</h2> <!-- В DeleteView объект называется object -->
-        <p>{{ object.content|truncatewords:20 }}</p>
-    </article>
 
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" style="color: red;">Да, удалить</button>
-        <a href="{% url 'blog:post_detail' object.pk %}">Отмена</a>
-    </form>
+    <div class="header">
+        <h1>Удаление поста</h1>
+        <div class="nav-links">
+            <a href="{% url 'blog:post_list' %}">← На главную</a>
+        </div>
+    </div>
+
+    <div class="delete-card">
+        <h1>Вы уверены, что хотите удалить этот пост?</h1>
+        <p>Это действие нельзя будет отменить.</p>
+
+        <div class="post-preview">
+            <h2>{{ object.title }}</h2>
+            <p>{{ object.content|truncatewords:20 }}</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-danger">Да, удалить</button>
+                <a href="{% url 'blog:post_detail' object.pk %}" class="btn btn-cancel">Отмена</a>
+            </div>
+        </form>
+    </div>
+
 </body>
 </html>
