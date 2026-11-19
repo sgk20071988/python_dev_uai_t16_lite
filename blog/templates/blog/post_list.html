@@ -2,21 +2,121 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Мой блог</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Все записи блога - Мой блог</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #0056b3;
+            margin-left: 15px;
+            font-weight: bold;
+        }
+        .btn-create {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .btn-create:hover {
+            background-color: #218838;
+        }
+        .post-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fafafa;
+        }
+        .post-card h2 {
+            margin-top: 0;
+        }
+        .post-card h2 a {
+            text-decoration: none;
+            color: #333;
+        }
+        .post-card h2 a:hover {
+            color: #0056b3;
+        }
+        .post-meta {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        .post-actions {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        .post-actions a {
+            text-decoration: none;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+        .link-edit { color: #0056b3; }
+        .link-delete { color: #dc3545; }
+        .empty-message {
+            text-align: center;
+            padding: 40px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Все записи блога</h1>
-    <p><a href="{% url 'blog:post_create' %}">+ Добавить пост</a></p>
 
-    {% for post in posts %}
-        <article>
-            <h2>{{ post.title }}</h2>
-            <p><small>{{ post.created_at|date:"d.m.Y H:i" }}</small></p>
-            <p>{{ post.content|truncatewords:30 }}</p>
-        </article>
-        <hr>
-    {% empty %}
-        <p>Пока нет ни одной записи.</p>
-    {% endfor %}
+    <div class="header">
+        <h1>Все записи блога</h1>
+        <div class="nav-links">
+            <a href="{% url 'blog:about' %}">О нас</a>
+        </div>
+    </div>
+
+    <a href="{% url 'blog:post_create' %}" class="btn-create">+ Добавить новый пост</a>
+
+    <!-- Проверка наличия постов -->
+    {% if posts %}
+        {% for post in posts %}
+            <article class="post-card">
+                <h2>
+                    <a href="{% url 'blog:post_detail' post.pk %}">{{ post.title }}</a>
+                </h2>
+                <div class="post-meta">
+                    Опубликовано: {{ post.created_at|date:"d.m.Y H:i" }}
+                </div>
+                <p>{{ post.content|truncatewords:30 }}</p>
+                
+                <div class="post-actions">
+                    <a href="{% url 'blog:post_detail' post.pk %}">Читать далее →</a>
+                    <a href="{% url 'blog:post_edit' post.pk %}" class="link-edit">✏️ Редактировать</a>
+                    <a href="{% url 'blog:post_delete' post.pk %}" class="link-delete">🗑️ Удалить</a>
+                </div>
+            </article>
+        {% endfor %}
+    {% else %}
+        <div class="empty-message">
+            <h2>Пока нет ни одной записи</h2>
+            <p>Самое время создать первый пост!</p>
+        </div>
+    {% endif %}
+
 </body>
 </html>

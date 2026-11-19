@@ -1,7 +1,16 @@
-from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, CreateView
-from .models import Post
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+)
+
 from .forms import PostForm
+from .models import Post
+
 
 def home(request):
     return render(request, 'blog/home.html')
@@ -23,3 +32,14 @@ class PostCreateView(CreateView):
     form_class = PostForm
     template_name = 'blog/post_create.html'
     success_url = '/posts/'
+
+class PostUpdateView(UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/post_form.html'
+
+class PostDeleteView(DeleteView):
+    model = Post
+    template_name = 'blog/post_confirm_delete.html' # Шаблон подтверждения
+    success_url = reverse_lazy('blog:post_list')    # Куда перенаправить после удаления
+    

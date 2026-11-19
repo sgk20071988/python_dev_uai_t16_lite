@@ -2,18 +2,95 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>{{ post.title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }} - Мой блог</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .nav-links {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #0056b3;
+            margin-right: 15px;
+        }
+        .post-meta {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+        .post-content {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+        .action-buttons {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+        .btn-edit {
+            background-color: #f0f0f0;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+        .btn-edit:hover {
+            background-color: #e0e0e0;
+        }
+        .btn-delete {
+            background-color: #fff;
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+        .btn-delete:hover {
+            background-color: #dc3545;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
-    <nav>
-        <a href="{% url 'blog:post_list' %}">← Все посты</a> |
-        <a href="{% url 'about' %}">О нас</a>
-    </nav>
 
+    <!-- Навигация -->
+    <div class="nav-links">
+        <a href="{% url 'blog:post_list' %}">← На главную</a>
+        <a href="{% url 'blog:about' %}">О нас</a>
+    </div>
+
+    <!-- Сам пост -->
     <article>
         <h1>{{ post.title }}</h1>
-        <p><small>Опубликовано: {{ post.created_at|date:"d.m.Y H:i" }}</small></p>
-        <div>{{ post.content|linebreaks }}</div>
+        
+        <div class="post-meta">
+            Опубликовано: {{ post.created_at|date:"d.m.Y H:i" }}
+        </div>
+
+        <!-- Фильтр linebreaks превращает переносы строк в HTML-абзацы -->
+        <div class="post-content">
+            {{ post.content|linebreaks }}
+        </div>
     </article>
+
+    <!-- Кнопки действий -->
+    <div class="action-buttons">
+        <a href="{% url 'blog:post_edit' post.pk %}" class="btn btn-edit">✏️ Редактировать</a>
+        <a href="{% url 'blog:post_delete' post.pk %}" class="btn btn-delete">🗑️ Удалить</a>
+    </div>
+
 </body>
 </html>

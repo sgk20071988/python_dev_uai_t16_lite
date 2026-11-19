@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Удаление поста</title>
+</head>
+<body>
+    <h1>Вы уверены, что хотите удалить этот пост?</h1>
+    
+    <article>
+        <h2>{{ object.title }}</h2> <!-- В DeleteView объект называется object -->
+        <p>{{ object.content|truncatewords:20 }}</p>
+    </article>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" style="color: red;">Да, удалить</button>
+        <a href="{% url 'blog:post_detail' object.pk %}">Отмена</a>
+    </form>
+</body>
+</html>
